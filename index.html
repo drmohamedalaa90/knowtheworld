@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>اعرف العالم مع محمد علاء</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#020c1d;font-family:Tahoma,Arial,sans-serif}
+.stage{position:relative;width:100vw;height:100vh;overflow:hidden;background:#020c1d}
+.canvas{
+  position:absolute;left:50%;top:50%;width:1536px;height:1024px;
+  transform-origin:center center;transform:translate(-50%,-50%) scale(var(--scale,1));
+  background:url("acl-world-interface.png") center/100% 100% no-repeat
+}
+.hotspot,.option,.start,.leaderboard,.instructions{
+  position:absolute;border:0;background:transparent;cursor:pointer;color:transparent;outline:none
+}
+.hotspot:focus-visible,.option:focus-visible,.start:focus-visible,.leaderboard:focus-visible,.instructions:focus-visible{
+  box-shadow:0 0 0 5px rgba(255,205,43,.85);border-radius:14px
+}
+.hotspot:hover{background:rgba(255,255,255,.07);border-radius:45%}
+.spain{left:505px;top:690px;width:270px;height:190px}
+.czech{left:920px;top:495px;width:145px;height:75px}
+.austria{left:927px;top:560px;width:135px;height:75px}
+.country-card{top:172px;width:114px;height:136px;border-radius:10px}
+.card-spain{left:27px}.card-czech{left:148px}.card-austria{left:267px}
+.q20{left:28px;top:380px;width:77px;height:64px}
+.q50{left:113px;top:380px;width:77px;height:64px}
+.q100{left:200px;top:380px;width:77px;height:64px}
+.q200{left:288px;top:380px;width:78px;height:64px}
+.start{left:28px;top:666px;width:341px;height:55px;border-radius:9px}
+.instructions{left:28px;top:742px;width:341px;height:48px}
+.leaderboard{left:1330px;top:24px;width:180px;height:48px}
+.toast{
+  position:absolute;z-index:5;left:50%;bottom:25px;transform:translateX(-50%);
+  background:rgba(3,17,42,.96);color:#fff;border:1px solid #3b78b5;
+  padding:12px 20px;border-radius:12px;opacity:0;pointer-events:none;
+  transition:.25s;font-weight:700;box-shadow:0 12px 35px rgba(0,0,0,.4)
+}
+.toast.show{opacity:1}
+.mobile-note{
+  display:none;position:fixed;inset:auto 12px 12px 12px;z-index:9;
+  color:white;background:rgba(2,14,35,.9);border:1px solid #3c6fa3;
+  border-radius:12px;padding:10px;text-align:center;font-size:13px
+}
+@media(max-aspect-ratio:1/1){.mobile-note{display:block}}
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="canvas" id="canvas">
+    <button class="leaderboard" aria-label="لوحة المتصدرين" onclick="message('لوحة المتصدرين ستُضاف لاحقًا')"></button>
+
+    <button class="option country-card card-spain" aria-label="اختيار إسبانيا" onclick="selectCountry('spain')"></button>
+    <button class="option country-card card-czech" aria-label="اختيار جمهورية التشيك" onclick="selectCountry('czech')"></button>
+    <button class="option country-card card-austria" aria-label="اختيار النمسا" onclick="selectCountry('austria')"></button>
+
+    <button class="hotspot spain" aria-label="إسبانيا" onclick="selectCountry('spain')"></button>
+    <button class="hotspot czech" aria-label="جمهورية التشيك" onclick="selectCountry('czech')"></button>
+    <button class="hotspot austria" aria-label="النمسا" onclick="selectCountry('austria')"></button>
+
+    <button class="option q20" aria-label="20 سؤال" onclick="selectQuestions(20)"></button>
+    <button class="option q50" aria-label="50 سؤال" onclick="selectQuestions(50)"></button>
+    <button class="option q100" aria-label="100 سؤال" onclick="selectQuestions(100)"></button>
+    <button class="option q200" aria-label="200 سؤال" onclick="selectQuestions(200)"></button>
+
+    <button class="start" aria-label="ابدأ الاختبار" onclick="startQuiz()"></button>
+    <button class="instructions" aria-label="تعليمات اللعبة" onclick="message('اختر الدولة وعدد الأسئلة، ثم اضغط ابدأ الاختبار')"></button>
+  </div>
+  <div class="toast" id="toast"></div>
+  <div class="mobile-note">لأفضل تجربة، استخدم الهاتف بالوضع الأفقي.</div>
+</div>
+
+<script>
+let selectedCountry='spain';
+let questionCount=200;
+
+function fit(){
+  const scale=Math.min(innerWidth/1536,innerHeight/1024);
+  document.documentElement.style.setProperty('--scale',scale);
+}
+addEventListener('resize',fit); fit();
+
+function message(text){
+  const t=document.getElementById('toast');
+  t.textContent=text;t.classList.add('show');
+  clearTimeout(window.toastTimer);
+  window.toastTimer=setTimeout(()=>t.classList.remove('show'),1800);
+}
+function selectCountry(country){
+  selectedCountry=country;
+  if(country==='spain') message('تم اختيار إسبانيا 🇪🇸');
+  else if(country==='czech') message('جمهورية التشيك: قريبًا');
+  else message('النمسا: قريبًا');
+}
+function selectQuestions(n){
+  questionCount=n;
+  message('تم اختيار '+n+' سؤال');
+}
+function startQuiz(){
+  if(selectedCountry!=='spain'){
+    message('هذه الدولة ستتوفر قريبًا');
+    return;
+  }
+  location.href='https://bejewelled-panda-ecd563.netlify.app/?questions='+questionCount;
+}
+</script>
+</body>
+</html>
