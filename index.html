@@ -1,110 +1,63 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>اعرف العالم مع محمد علاء</title>
 <style>
-*{box-sizing:border-box}
-html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#020c1d;font-family:Tahoma,Arial,sans-serif}
-.stage{position:relative;width:100vw;height:100vh;overflow:hidden;background:#020c1d}
-.canvas{
-  position:absolute;left:50%;top:50%;width:1536px;height:1024px;
-  transform-origin:center center;transform:translate(-50%,-50%) scale(var(--scale,1));
-  background:url("acl-world-interface.png") center/100% 100% no-repeat
-}
-.hotspot,.option,.start,.leaderboard,.instructions{
-  position:absolute;border:0;background:transparent;cursor:pointer;color:transparent;outline:none
-}
-.hotspot:focus-visible,.option:focus-visible,.start:focus-visible,.leaderboard:focus-visible,.instructions:focus-visible{
-  box-shadow:0 0 0 5px rgba(255,205,43,.85);border-radius:14px
-}
-.hotspot:hover{background:rgba(255,255,255,.07);border-radius:45%}
-.spain{left:505px;top:690px;width:270px;height:190px}
-.czech{left:920px;top:495px;width:145px;height:75px}
-.austria{left:927px;top:560px;width:135px;height:75px}
-.country-card{top:172px;width:114px;height:136px;border-radius:10px}
-.card-spain{left:27px}.card-czech{left:148px}.card-austria{left:267px}
-.q20{left:28px;top:380px;width:77px;height:64px}
-.q50{left:113px;top:380px;width:77px;height:64px}
-.q100{left:200px;top:380px;width:77px;height:64px}
-.q200{left:288px;top:380px;width:78px;height:64px}
-.start{left:28px;top:666px;width:341px;height:55px;border-radius:9px}
-.instructions{left:28px;top:742px;width:341px;height:48px}
-.leaderboard{left:1330px;top:24px;width:180px;height:48px}
-.toast{
-  position:absolute;z-index:5;left:50%;bottom:25px;transform:translateX(-50%);
-  background:rgba(3,17,42,.96);color:#fff;border:1px solid #3b78b5;
-  padding:12px 20px;border-radius:12px;opacity:0;pointer-events:none;
-  transition:.25s;font-weight:700;box-shadow:0 12px 35px rgba(0,0,0,.4)
-}
-.toast.show{opacity:1}
-.mobile-note{
-  display:none;position:fixed;inset:auto 12px 12px 12px;z-index:9;
-  color:white;background:rgba(2,14,35,.9);border:1px solid #3c6fa3;
-  border-radius:12px;padding:10px;text-align:center;font-size:13px
-}
-@media(max-aspect-ratio:1/1){.mobile-note{display:block}}
+:root{--bg:#061326;--panel:#0a2038;--line:#2e5d86;--text:#f4f8ff;--muted:#a9c2d9;--gold:#f3bf28;--blue:#1687ff}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:Tahoma,Arial,sans-serif;color:var(--text);background:linear-gradient(160deg,#020817,var(--bg))}
+button,select{font:inherit}.page{max-width:1550px;margin:auto;padding:18px}
+header{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:10px 4px 18px;border-bottom:1px solid rgba(255,255,255,.14)}
+.title{text-align:center;flex:1}.title h1{margin:0;color:#ffc948;font-size:clamp(2rem,4vw,3.5rem)}.title p{margin:5px 0 0;color:#e9f3ff;font-weight:700}
+.fun-badge{padding:10px 15px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.04);font-weight:700}
+.layout{display:grid;grid-template-columns:330px 1fr;gap:18px;margin-top:18px}
+.panel{background:linear-gradient(180deg,rgba(13,42,73,.96),rgba(6,25,45,.98));border:1px solid var(--line);border-radius:20px;padding:16px}
+.section{padding:4px 0 16px;margin-bottom:16px;border-bottom:1px solid rgba(255,255,255,.14)}.section:last-child{border-bottom:0}
+.section h2{margin:0 0 12px;font-size:1.12rem}.country-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.country{min-height:118px;border:1px solid #476a8b;border-radius:12px;color:white;background:#102c49;padding:10px 6px;cursor:pointer;transition:.2s}
+.country.active{border:3px solid var(--gold);background:linear-gradient(180deg,#174d84,#103353);box-shadow:0 0 0 3px rgba(243,191,40,.16)}
+.flag{font-size:2.2rem;display:block;margin-bottom:7px}.country strong{display:block;font-size:.9rem}.country small{color:#bdd2e5}
+.choice-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.choice{border:1px solid #476a8b;border-radius:10px;color:#fff;background:#102c49;padding:12px 4px;cursor:pointer}
+.choice.active{border:3px solid var(--gold);padding:10px 2px;background:#173b60}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid #365c7e;border-radius:11px;padding:11px;margin-top:9px;background:#0a2744}
+select{background:#0d2946;color:white;border:1px solid #456b8d;border-radius:8px;padding:7px 10px}.switch{position:relative;width:47px;height:25px}.switch input{display:none}
+.slider{position:absolute;inset:0;background:#38516b;border-radius:999px}.slider:before{content:"";position:absolute;width:19px;height:19px;right:3px;top:3px;background:white;border-radius:50%;transition:.2s}
+.switch input:checked + .slider{background:var(--blue)}.switch input:checked + .slider:before{transform:translateX(-22px)}
+.start{width:100%;border:0;border-radius:12px;padding:16px;margin-top:12px;cursor:pointer;color:#2d2200;font-weight:900;font-size:1.25rem;background:linear-gradient(180deg,#ffd85b,#e8ad16)}
+.status{margin-top:12px;text-align:center;color:#bcd4e9;min-height:22px}
+.map-wrap{position:relative;min-height:680px;overflow:hidden;border-radius:22px;border:1px solid var(--line);background:#08284a}
+.map{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center}
+.pin{position:absolute;transform:translate(-50%,-50%);border:2px solid rgba(255,255,255,.8);border-radius:999px;min-width:118px;padding:10px 14px;color:white;font-weight:900;cursor:pointer}
+.pin.active{box-shadow:0 0 0 5px rgba(255,207,61,.35)}.pin-spain{left:22%;top:78%;background:#d8a500}.pin-czech{left:52%;top:52%;background:#1c68d8}.pin-austria{left:51%;top:60%;background:#d63e35}
+footer{margin-top:14px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;background:rgba(5,22,42,.92);border:1px solid var(--line);border-radius:18px;padding:13px}.feature{text-align:center;color:#cfe3f5}.feature strong{display:block;color:white}
+@media(max-width:980px){.layout{grid-template-columns:1fr}.map-wrap{min-height:560px}}@media(max-width:560px){.country-grid{grid-template-columns:1fr}.choice-grid{grid-template-columns:repeat(2,1fr)}.map-wrap{min-height:440px}footer{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-<div class="stage">
-  <div class="canvas" id="canvas">
-    <button class="leaderboard" aria-label="لوحة المتصدرين" onclick="message('لوحة المتصدرين ستُضاف لاحقًا')"></button>
-
-    <button class="option country-card card-spain" aria-label="اختيار إسبانيا" onclick="selectCountry('spain')"></button>
-    <button class="option country-card card-czech" aria-label="اختيار جمهورية التشيك" onclick="selectCountry('czech')"></button>
-    <button class="option country-card card-austria" aria-label="اختيار النمسا" onclick="selectCountry('austria')"></button>
-
-    <button class="hotspot spain" aria-label="إسبانيا" onclick="selectCountry('spain')"></button>
-    <button class="hotspot czech" aria-label="جمهورية التشيك" onclick="selectCountry('czech')"></button>
-    <button class="hotspot austria" aria-label="النمسا" onclick="selectCountry('austria')"></button>
-
-    <button class="option q20" aria-label="20 سؤال" onclick="selectQuestions(20)"></button>
-    <button class="option q50" aria-label="50 سؤال" onclick="selectQuestions(50)"></button>
-    <button class="option q100" aria-label="100 سؤال" onclick="selectQuestions(100)"></button>
-    <button class="option q200" aria-label="200 سؤال" onclick="selectQuestions(200)"></button>
-
-    <button class="start" aria-label="ابدأ الاختبار" onclick="startQuiz()"></button>
-    <button class="instructions" aria-label="تعليمات اللعبة" onclick="message('اختر الدولة وعدد الأسئلة، ثم اضغط ابدأ الاختبار')"></button>
-  </div>
-  <div class="toast" id="toast"></div>
-  <div class="mobile-note">لأفضل تجربة، استخدم الهاتف بالوضع الأفقي.</div>
+<div class="page">
+<header><div class="fun-badge">🌍 مسابقة ترفيهية</div><div class="title"><h1>اعرف العالم مع محمد علاء</h1><p>إسبانيا – جمهورية التشيك – النمسا</p></div><div class="fun-badge">🏆 لوحة المتصدرين</div></header>
+<main class="layout">
+<aside class="panel">
+<section class="section"><h2>🌐 اختر الدولة</h2><div class="country-grid">
+<button class="country active" data-country="spain"><span class="flag">🇪🇸</span><strong>إسبانيا</strong><small>200 سؤال</small></button>
+<button class="country" data-country="czech"><span class="flag">🇨🇿</span><strong>جمهورية التشيك</strong><small>200 سؤال</small></button>
+<button class="country" data-country="austria"><span class="flag">🇦🇹</span><strong>النمسا</strong><small>200 سؤال</small></button>
+</div></section>
+<section class="section"><h2>❓ عدد الأسئلة</h2><div class="choice-grid">
+<button class="choice" data-count="20">20<br><small>سؤال</small></button><button class="choice active" data-count="50">50<br><small>سؤال</small></button><button class="choice" data-count="100">100<br><small>سؤال</small></button><button class="choice" data-count="200">200<br><small>سؤال</small></button>
+</div></section>
+<section class="section"><h2>⚙️ الإعدادات</h2><div class="row"><span>⏱ الوقت لكل سؤال</span><select id="timer"><option>20</option><option selected>30</option><option>45</option><option>60</option></select></div><div class="row"><span>🔀 خلط الاختيارات</span><label class="switch"><input id="shuffle" type="checkbox" checked><span class="slider"></span></label></div></section>
+<button class="start" id="startBtn">▶ ابدأ الاختبار</button><div class="status" id="status"></div>
+</aside>
+<section class="map-wrap"><img class="map" src="europe-map.png" alt="خريطة أوروبا"><button class="pin pin-spain active" data-country="spain">🇪🇸 إسبانيا</button><button class="pin pin-czech" data-country="czech">🇨🇿 التشيك</button><button class="pin pin-austria" data-country="austria">🇦🇹 النمسا</button></section>
+</main>
+<footer><div class="feature"><strong>🎯 اختبر معلوماتك</strong>التاريخ والثقافة والجغرافيا</div><div class="feature"><strong>⏱ تحدي الوقت</strong>اختر الزمن المناسب</div><div class="feature"><strong>🏅 تنافس مع الآخرين</strong>اجمع أعلى نتيجة</div></footer>
 </div>
-
 <script>
-let selectedCountry='spain';
-let questionCount=200;
-
-function fit(){
-  const scale=Math.min(innerWidth/1536,innerHeight/1024);
-  document.documentElement.style.setProperty('--scale',scale);
-}
-addEventListener('resize',fit); fit();
-
-function message(text){
-  const t=document.getElementById('toast');
-  t.textContent=text;t.classList.add('show');
-  clearTimeout(window.toastTimer);
-  window.toastTimer=setTimeout(()=>t.classList.remove('show'),1800);
-}
-function selectCountry(country){
-  selectedCountry=country;
-  if(country==='spain') message('تم اختيار إسبانيا 🇪🇸');
-  else if(country==='czech') message('جمهورية التشيك: قريبًا');
-  else message('النمسا: قريبًا');
-}
-function selectQuestions(n){
-  questionCount=n;
-  message('تم اختيار '+n+' سؤال');
-}
-function startQuiz(){
-  if(selectedCountry!=='spain'){
-    message('هذه الدولة ستتوفر قريبًا');
-    return;
-  }
-  location.href='https://bejewelled-panda-ecd563.netlify.app/?questions='+questionCount;
-}
+const quizUrls={spain:"https://bejewelled-panda-ecd563.netlify.app/",czech:"czech-quiz.html",austria:"austria-quiz.html"};
+const names={spain:"إسبانيا",czech:"جمهورية التشيك",austria:"النمسا"};let selectedCountry="spain",selectedCount=50;
+function refreshUI(){document.querySelectorAll("[data-country]").forEach(el=>el.classList.toggle("active",el.dataset.country===selectedCountry));document.querySelectorAll("[data-count]").forEach(el=>el.classList.toggle("active",Number(el.dataset.count)===selectedCount));status.textContent=`تم اختيار: ${names[selectedCountry]} – ${selectedCount} سؤال`}
+document.querySelectorAll("[data-country]").forEach(el=>el.onclick=()=>{selectedCountry=el.dataset.country;refreshUI()});document.querySelectorAll("[data-count]").forEach(el=>el.onclick=()=>{selectedCount=Number(el.dataset.count);refreshUI()});
+startBtn.onclick=()=>{const base=quizUrls[selectedCountry],sep=base.includes("?")?"&":"?";location.href=`${base}${sep}questions=${selectedCount}&timer=${timer.value}&shuffle=${shuffle.checked?1:0}`};refreshUI();
 </script>
-</body>
-</html>
+</body></html>
